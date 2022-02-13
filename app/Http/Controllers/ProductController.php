@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ProductStoreRequest;
 use App\Models\Product;
 use Illuminate\Http\Request;
 
@@ -14,7 +15,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        Product::all();
+        $products = Product::all();
         return view('products.index',compact('products'));
     }
 
@@ -25,7 +26,7 @@ class ProductController extends Controller
      */
     public function create()
     {
-        //
+        return view('products.create');
     }
 
     /**
@@ -34,9 +35,16 @@ class ProductController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ProductStoreRequest $request)
     {
-        //
+        $data = $request->all();
+        if($request->has('image')){
+            $image_path=$request->file('image')->store('medias');
+            $data['featued_image_url']=$image_path;
+        }
+        Product::create($data);
+        return redirect()->route('products.index')->with(['status'=>'Success','message'=> 'Product created successfully']);
+
     }
 
     /**
