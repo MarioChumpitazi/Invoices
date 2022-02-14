@@ -38,13 +38,14 @@ class ProductController extends Controller
     public function store(ProductStoreRequest $request)
     {
         $data = $request->all();
-        if($request->has('image')){
-            $image_path=$request->file('image')->store('medias');
-            $data['featued_image_url']=$image_path;
+
+        if ($request->has('image')) {
+            $image_path = $request->file('image')->store('medias');
+            $data['featured_image_url'] = $image_path;
         }
         Product::create($data);
-        return redirect()->route('products.index')->with(['status'=>'Success','message'=> 'Product created successfully']);
 
+        return redirect()->route('products.index')->with(['status' => 'Success', 'color' => 'green', 'message' => 'Product created successfully']);
     }
 
     /**

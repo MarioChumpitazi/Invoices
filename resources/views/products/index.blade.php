@@ -38,7 +38,7 @@
                                             <td class="py-3 px-6 text-left whitespace-nowrap">
                                                 <div class="flex items-center">
                                                     <div class="mr-2">
-                                                        <img class="w-6 h-6 rounded-full" src="https://randomuser.me/api/portraits/men/1.jpg"/>
+                                                        <img class="w-10" src="{{asset("$product->featured_image_url")}}"/>
                                                     </div>
                                                     <span class="font-medium">{{str_pad($product->id,4,0,STR_PAD_LEFT)}}</span>
                                                 </div>
@@ -46,9 +46,7 @@
 
                                             <td class="py-3 px-6 text-left">
                                                 <div class="flex items-center">
-                                                    <div class="mr-2">
-                                                        <img class="w-6 h-6 rounded-full" src="https://randomuser.me/api/portraits/men/1.jpg"/>
-                                                    </div>
+                                                    
                                                     <span>{{$product->name}}</span>
                                                 </div>
                                             </td>
