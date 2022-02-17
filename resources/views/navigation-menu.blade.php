@@ -4,7 +4,7 @@
         <div class="flex justify-between h-16">
             <div class="flex">
                 <!-- Logo -->
-                <div class="shrink-0 flex items-center">
+                <div class="flex-shrink-0 flex items-center">
                     <a href="{{ route('dashboard') }}">
                         <x-jet-application-mark class="block h-9 w-auto" />
                     </a>
@@ -18,6 +18,14 @@
 
                     <x-jet-nav-link href="{{ route('products.index') }}" :active="request()->routeIs('products.*')">
                         {{ __('Products') }}
+                    </x-jet-nav-link>
+
+                    <x-jet-nav-link href="{{ route('buyers.index') }}" :active="request()->routeIs('buyers.*')">
+                        {{ __('Buyers') }}
+                    </x-jet-nav-link>
+
+                    <x-jet-nav-link href="{{ route('invoices.index') }}" :active="request()->routeIs('invoices.*')">
+                        {{ __('Invoices') }}
                     </x-jet-nav-link>
                 </div>
             </div>
@@ -151,7 +159,7 @@
         <div class="pt-4 pb-1 border-t border-gray-200">
             <div class="flex items-center px-4">
                 @if (Laravel\Jetstream\Jetstream::managesProfilePhotos())
-                    <div class="shrink-0 mr-3">
+                    <div class="flex-shrink-0 mr-3">
                         <img class="h-10 w-10 rounded-full object-cover" src="{{ Auth::user()->profile_photo_url }}" alt="{{ Auth::user()->name }}" />
                     </div>
                 @endif

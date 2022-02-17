@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\BuyerController;
+use App\Http\Controllers\InvoiceController;
+use App\Http\Controllers\InvoiceDetailController;
 use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
 
@@ -23,5 +26,16 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
 })->name('dashboard');
 
 Route::middleware('auth')->group(function () {
-    Route::resource('/products',ProductController::class);
+    Route::resource('/products', ProductController::class);
+    
+    Route::resource('/buyers', BuyerController::class);
+    
+    Route::resource('/invoices', InvoiceController::class);
+    
+    Route::post('/invoices/complete/{invoice}', [InvoiceController::class, 'completeSend'])->name('invoices.complete');
+
+    Route::resource('/invoice-details', InvoiceDetailController::class);
+    
+    Route::get('/invoices/add-product/{invoice}/', [InvoiceDetailController::class, 'create'])->name('invoices.add_products');
+
 });

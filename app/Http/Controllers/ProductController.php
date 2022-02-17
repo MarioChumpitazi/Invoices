@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ProductStoreRequest;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
@@ -16,7 +17,7 @@ class ProductController extends Controller
     public function index()
     {
         $products = Product::all();
-        return view('products.index',compact('products'));
+        return view('products.index', compact('products'));
     }
 
     /**
@@ -26,7 +27,8 @@ class ProductController extends Controller
      */
     public function create()
     {
-        return view('products.create');
+        $product = new Product();
+        return view('products.create', compact('product'));
     }
 
     /**
@@ -67,7 +69,7 @@ class ProductController extends Controller
      */
     public function edit(Product $product)
     {
-        //
+        return view('products.create', compact('product'));
     }
 
     /**
@@ -79,7 +81,19 @@ class ProductController extends Controller
      */
     public function update(Request $request, Product $product)
     {
-        //
+        $data = $request->all();
+
+        if ($request->has('image')) {
+            Storage::delete($product->featured_image_url);
+
+            $image_path = $request->file('image')->store('medias');
+            $data['featured_image_url'] = $image_path;
+        }
+
+        $product->fill($data);
+        $product->save();
+
+        return redirect()->route('products.index')->with(['status' => 'Success', 'color' => 'green', 'message' => 'Product updated successfully']);
     }
 
     /**
@@ -90,6 +104,13 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
-        //
+        try {
+            $product->delete();
+            $result = ['status' => 'success', 'color' => 'green', 'message' => 'Deleted successfully'];
+        } catch (\Exception $e) {
+            $result = ['status' => 'error', 'color' => 'red', 'message' => 'Product cannot be delete'];
+        }
+
+        return redirect()->route('products.index')->with($result);
     }
 }
